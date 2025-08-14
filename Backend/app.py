@@ -1,5 +1,5 @@
 # Import necessary libraries for the Flask application and API functionality
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_restx import Api, Namespace, Resource, fields
 import joblib
@@ -9,6 +9,16 @@ import logging
 import re
 import nltk
 from nltk.corpus import stopwords
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    # Legacy Python that doesn't verify HTTPS certificates by default
+    pass
+else:
+    # Handle target environment that doesn't support certificate verification
+    ssl._create_default_https_context = _create_unverified_https_context
 
 # --- NLTK Setup for Text Cleaning ---
 # This block attempts to download the necessary stopwords for text cleaning.
@@ -24,7 +34,9 @@ except LookupError:
 logging.basicConfig(level=logging.INFO)
 
 # Initialize the Flask application
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='../frontend/static',
+            template_folder='../frontend/templates')
 # Enable Cross-Origin Resource Sharing (CORS) for all domains to allow
 # the frontend to make requests to this API.
 CORS(app)
@@ -37,6 +49,10 @@ api = Api(app, version='1.0', title='Phishing Detection API',
 # Define a namespace for the prediction endpoint
 # This helps organize the API and its documentation
 ns = api.namespace('predict', description='Phishing prediction operations')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # --- Helper Function for Text Cleaning ---
 def clean_text_for_prediction(text):
