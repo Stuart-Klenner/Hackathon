@@ -1,0 +1,6 @@
+Flask==3.0.3
+Flask-CORS==4.0.1
+Flask-RESTx==1.1.0
+joblib==1.4.2
+numpy==1.26.4
+nltk==3.8.1
