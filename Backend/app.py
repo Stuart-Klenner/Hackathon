@@ -28,13 +28,12 @@ except LookupError:
 # Set up logging for better error tracking
 logging.basicConfig(level=logging.INFO)
 
-# Use os.path.join for robust path handling
+# Get the directory where app.py is located
 base_dir = os.path.abspath(os.path.dirname(__file__))
 frontend_dir = os.path.join(base_dir, '..', 'Frontend')
 
-app = Flask(__name__,
-            static_folder=os.path.join(frontend_dir, 'static'),
-            template_folder=os.path.join(frontend_dir, 'templates'))
+# Initialize the Flask application
+app = Flask(__name__)
 
 CORS(app)
 
