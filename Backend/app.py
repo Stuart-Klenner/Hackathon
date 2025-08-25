@@ -28,6 +28,9 @@ except LookupError:
 # Set up logging for better error tracking
 logging.basicConfig(level=logging.INFO)
 
+# Get the directory where app.py is located
+base_dir = os.path.abspath(os.path.dirname(__file__))
+
 # Initialize the Flask application
 app = Flask(__name__)
 
